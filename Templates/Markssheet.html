@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="row">
+<div class="col-sm-4" class="mt-4">
+    <h3 style="font-size:40px;">{{name}}</h3>
+<form action="" method="post" name="entry">
+    {% csrf_token %}
+   
+ {{form.as_p}}
+   <input type="button" value="Calculate" class="btn btn-success" onclick="avg()">
+   <input type="submit" value="Upload" class="btn btn-success">
+
+</form>
+</div>
+<div class="col-sm-8">
+    <h4 class="text-center alert alert-info">Show Uploaded Marks</h4>
+    {% if marks %}
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Maths</th>
+            <th scope="col">Physics</th>
+            <th scope="col">Chemistry</th>
+            <th scope="col">Biology</th>
+            <th scope="col">English</th>
+            <th scope="col">Total</th>
+            <th scope="col">Percentage</th>
+
+          </tr>
+        </thead>
+        <tbody>
+            {% for st in    marks  %}
+          
+          <tr>
+            
+            <td >{{st.Maths}}</td>
+            <td>{{st.Physics}}</td>
+            <td>{{st.Chemistry}}</td>
+            <td>{{st.Biology}}</td>
+            <td>{{st.English}}</td>
+            <td>{{st.Total}}</td>
+            <td>{{st.Percentage}}</td>
+
+            <td><a href="{% url 'updatemarks' st.id %}" class="btn btn-warning btn-sm">Edit</a>
+            <form action="{% url 'deletemarks' st.id%}" method="post" class="d-inline">
+             {% csrf_token %}<input type="submit" class="btn btn-danger" value="Delete"></form></td>
+          </tr>
+          {% endfor %}
+        
+        </tbody>
+      </table>
+    {% else %}
+    <h4 class="text-center alert alert-warning">No Records</h4>
+    {% endif %}
+    {% if messages %}
+ {% for message in messages  %}
+   <small {% if message.tags%} class="bg-success {{message.tags}}"{%endif%}> {{message}}</small>{% endfor %}
+{% endif %}
+</div>
+</div>
+<script>
+    function avg(){
+        var a,b,c,e,d,p,s
+        a=parseInt(entry.Maths.value)
+        b=parseInt(entry.Physics.value)
+        c=parseInt(entry.Biology.value)
+        d=parseInt(entry.Chemistry.value)
+        e=parseInt(entry.English.value)
+        s=(a+b+c+d+e)
+        p=(a+b+c+d+e)/5
+        entry.Total.value=s
+        entry.Percentage.value=p
+    }
+</script>
+
+{% endblock content %}
+
+
+
+<style>
+    .success{
+        font-size:30px;
+        color:white;
+        position: absolute;
+        top:0%;
+        left:20%;
+        }
+</style>

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content  %}
+<div class="row">
+    <div class="col-sm-8">
+        <h4 class="alert alert-info">Update Student Information</h4>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value="Update" class="btn btn-success">
+            <input type="button" value="Calculate" class="btn btn-warning" onclick="avg()">
+            <a href="{% url 'add_show' %}" class="btn btn-info">Back to Home</a>
+        
+        </form>
+    </div>
+</div>
+{% if messages %}
+ {% for message in messages  %}
+   <small {% if message.tags%} class="bg-success {{message.tags}}"{%endif%}> {{message}}</small>{% endfor %}
+{% endif %}
+<script>
+function avg(){
+    var a,b,c,e,d,p,s
+    a=parseInt(entry.Maths.value)
+    b=parseInt(entry.Physics.value)
+    c=parseInt(entry.Biology.value)
+    d=parseInt(entry.Chemistry.value)
+    e=parseInt(entry.English.value)
+    s=(a+b+c+d+e)
+    p=(a+b+c+d+e)/5
+    entry.Total.value=s
+    entry.Percentage.value=p
+}
+</script>
+
+{% endblock content  %}
+
